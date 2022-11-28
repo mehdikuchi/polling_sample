@@ -22,9 +22,10 @@ def detail(request,question_id):
 
 def results(request, question_id):
     question = get_object_or_404(Question,pk=question_id)
-    numvotes = question.choice_set.get(pk = question_id)
-    response = f"you're looking at the results of question {question_id} and the number of votes is {numvotes.votes}"
-    return HttpResponse(response)
+    return render(request,"polls/results.html",{"question":question})
+    # numvotes = question.choice_set.get(pk = question_id)
+    # response = f"you're looking at the results of question {question_id} and the number of votes is {numvotes.votes}"
+    # return HttpResponse(response)
 
 def vote(request,question_id):
     question = get_object_or_404(Question,pk=question_id)
