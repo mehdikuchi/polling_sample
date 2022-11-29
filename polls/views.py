@@ -2,30 +2,22 @@ from django.shortcuts import render,get_object_or_404
 from django.http import HttpResponse,Http404,HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
+from django.views import generic
 from .models import Question,Choice
 # Create your views here.
-def index(request):
-    latest_question_list = Question.objects.order_by("-pub_date")[:5]
-    template = loader.get_template('polls/index.html')
-    context = {"latest_question_list": latest_question_list}        
-    return render(request,'polls\index.html',context)
+class IndexView(generic.ListView):
+    context_object_name = "latest_question_list"
+    template_name = "polls/index.html"
+    def get_queryset(self):
+        return Question.objects.order_by('-pub_date')[:5]
 
-def detail(request,question_id):
-    """ 
-    try:
-        q = Question.objects.get(pk = question_id)
-    except Question.DoesNotExist:
-        raise Http404("Question Does not exist")
-        """
-    q = get_object_or_404(Question,pk=question_id)
-    return render(request, 'polls\details.html',{'question':q})    
+class DetailView(generic.DetailView):
+    template_name = "polls\details.html"
+    model = Question
 
-def results(request, question_id):
-    question = get_object_or_404(Question,pk=question_id)
-    return render(request,"polls/results.html",{"question":question})
-    # numvotes = question.choice_set.get(pk = question_id)
-    # response = f"you're looking at the results of question {question_id} and the number of votes is {numvotes.votes}"
-    # return HttpResponse(response)
+class ResultsView(generic.DetailView):
+    model = Question
+    template_name = "polls/results.html"
 
 def vote(request,question_id):
     question = get_object_or_404(Question,pk=question_id)
