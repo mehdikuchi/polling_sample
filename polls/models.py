@@ -7,7 +7,7 @@ class Question(models.Model):
     pub_date = models.DateTimeField('date published')
     def __str__(self) -> str:
         return self.QuestionText
-    def was_published_reasdcently(self):
+    def was_published_recently(self):
         return self.pub_date>= timezone.now()- datetime.timedelta(days=1)
 
 class Choice(models.Model):
