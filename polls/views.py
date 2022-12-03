@@ -9,12 +9,15 @@ from .models import Question,Choice
 class IndexView(generic.ListView):
     context_object_name = "latest_question_list"
     template_name = "polls/index.html"
-    def get_queryset(self):
+    def get_queryset(self):        
         return Question.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
+
 
 class DetailView(generic.DetailView):
     template_name = "polls\details.html"
     model = Question
+    def get_queryset(self):
+        return Question.objects.filter(pub_date__lte==timezone.now())
 
 class ResultsView(generic.DetailView):
     model = Question

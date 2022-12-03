@@ -3,10 +3,10 @@ import datetime
 from django.utils import timezone
 # Create your models here.
 class Question(models.Model):
-    QuestionText = models.CharField(max_length=100)
+    question_text = models.CharField(max_length=100)
     pub_date = models.DateTimeField('date published')
     def __str__(self) -> str:
-        return self.QuestionText
+        return self.question_text
     def was_published_recently(self):
         return timezone.now()>=self.pub_date>= timezone.now()- datetime.timedelta(days=1)
 
